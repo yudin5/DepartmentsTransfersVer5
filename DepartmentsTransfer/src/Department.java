@@ -2,11 +2,31 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
+/** Класс служит для хранения департамента со списком сотрудников и возможными перемещениями.
+ * Поля: Название, Список сотрудников, Список возможных перестановок сотрудников
+ * @author Виталий Юдин
+ * @version 1.0
+ */
 public class Department {
     private String name;
     private ArrayList<Employee> listOfEmployees;
-    public ArrayList<ArrayList<Employee>> allPossiblePermutations = new ArrayList<>();
+    private ArrayList<ArrayList<Employee>> allPossiblePermutations;
 
+    public ArrayList<ArrayList<Employee>> getPermutations() {
+        if (allPossiblePermutations == null) {
+            allPossiblePermutations = new ArrayList<ArrayList<Employee>>();
+        }
+        return allPossiblePermutations;
+    }
+
+    public void setPermutations(ArrayList<ArrayList<Employee>> allPossiblePermutations) {
+        this.allPossiblePermutations = allPossiblePermutations;
+    }
+
+    /** Создает новый департамент с указанным названием
+     * @param name название департамента
+     * @see TransfersTestDrive#readFile(String)
+     */
     public Department(String name) {
         this.name = name;
     }
@@ -49,6 +69,9 @@ public class Department {
         return composition;
     }
 
+    /** Вычисляет среднюю зарплату департамента
+     * @return Возвращает среднюю зарплату департамента в формате BigDecimal
+     */
     public BigDecimal getAverageSalary() {
         BigDecimal sum = new BigDecimal(0);
         listOfEmployees = getListOfEmployees();
@@ -64,6 +87,9 @@ public class Department {
 
     }
 
+    /** Вычисляет все возможные перестановки для департамента
+     * @see TransfersTestDrive
+     */
     public void calcAllPossiblePermutations() {
         // Берем список сотрудников и вычисляем все возможные перестановки
         ArrayList<Employee> argList = getListOfEmployees();
@@ -74,7 +100,7 @@ public class Department {
             ArrayList<Employee> tmpList = new ArrayList<>();
             tmpList.add(tmp);
             // Добавляем этот список к супер-списку
-            allPossiblePermutations.add(tmpList);
+            getPermutations().add(tmpList);
 
             // Проходимся по суперсписку
             int listNumber = allPossiblePermutations.size() - 1;
@@ -87,5 +113,4 @@ public class Department {
             }
         }
     }
-
 }
